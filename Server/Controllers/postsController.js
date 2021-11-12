@@ -4,7 +4,7 @@ exports.getAllPosts = async (req, res) => {
   try {
     const post = await Post.find();
 
-    console.log(post);
+    // console.log(post);
 
     res.status(200).json({
       status: "Success",

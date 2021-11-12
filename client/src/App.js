@@ -1,9 +1,62 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
+
+import {
+  Container,
+  CssBaseline,
+  AppBar,
+  Typography,
+  Grow,
+  Grid,
+} from "@mui/material";
+
+import { useDispatch } from "react-redux";
+import getPosts from "./Actions/GetPosts";
+
+import Posts from "./Components/Posts/Posts";
+import Form from "./Components/Form/Form";
+import useStyles from "./Styles";
 
 const App = () => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
+
   return (
     <Fragment>
-      <h1>Hello World!</h1>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <AppBar className={classes.appBar} position="static">
+          <Typography
+            className={classes.heading}
+            variant="h3"
+            gutterBottom
+            component="div"
+            align="inherit"
+          >
+            TourBook
+          </Typography>
+        </AppBar>
+        <Grow in>
+          <Container>
+            <Grid
+              container
+              justify="space-between"
+              alignItems="stretch"
+              spacing={3}
+            >
+              <Grid item xs={12} sm={7}>
+                <Posts />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Form />
+              </Grid>
+            </Grid>
+          </Container>
+        </Grow>
+      </Container>
     </Fragment>
   );
 };
