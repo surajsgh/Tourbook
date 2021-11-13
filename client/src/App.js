@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 import {
   Container,
@@ -17,6 +17,7 @@ import Form from "./Components/Form/Form";
 import useStyles from "./Styles";
 
 const App = () => {
+  const [selectedId, setSelectedId] = useState(null);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -48,10 +49,10 @@ const App = () => {
               spacing={3}
             >
               <Grid item xs={12} sm={7}>
-                <Posts />
+                <Posts setSelectedId={setSelectedId} />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Form />
+                <Form selectedId={selectedId} setSelectedId={setSelectedId} />
               </Grid>
             </Grid>
           </Container>
