@@ -6,11 +6,9 @@ import { Grid, CircularProgress } from "@mui/material";
 import Post from "./Post/Post";
 import useStyle from "./Style";
 
-const Posts = () => {
+const Posts = (props) => {
   const posts = useSelector((state) => state.posts);
   const classes = useStyle();
-
-  console.log(posts);
 
   return (
     <Fragment>
@@ -23,9 +21,9 @@ const Posts = () => {
           alignItems="stretch"
           spacing={3}
         >
-          {posts.result.map((post) => (
+          {posts.map((post) => (
             <Grid key={post._id} item xs={12} sm={6}>
-              <Post post={post} />
+              <Post post={post} setSelectedId={props.setSelectedId} />
             </Grid>
           ))}
         </Grid>

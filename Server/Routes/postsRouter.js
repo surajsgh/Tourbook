@@ -1,14 +1,16 @@
 const express = require("express");
-const posts = require("./../Controllers/postsController");
-// const cors = require("cors");
-const app = express();
+const {
+  getAllPosts,
+  createPost,
+  updatePost,
+} = require("./../Controllers/postsController");
 
-// app.use(cors());
+const app = express();
 
 // ROUTERS
 const postsRouter = express.Router();
 
-postsRouter.route("/").get(posts.getAllPosts);
-postsRouter.route("/").post(posts.createPost);
+postsRouter.route("/").get(getAllPosts).post(createPost);
+postsRouter.route("/:id").patch(updatePost);
 
 module.exports = postsRouter;

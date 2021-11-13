@@ -1,29 +1,53 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import FileBase from "react-file-base64";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import useStyle from "./Style";
 import { createPosts } from "./../../Actions/CreatePosts";
+import { updatePost } from "./../../Actions/UpdatePosts";
 
-const Form = () => {
+const Form = (props) => {
   const [postData, setPostData] = useState({
-    creator: "",
+    createdBy: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
+  const post = useSelector((state) =>
+    props.selectedId
+      ? state.posts.find((post) => post._id === props.selectedId)
+      : null
+  );
   const classes = useStyle();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (post) setPostData(post);
+  }, [post]);
+
   const submitHandler = (event) => {
     event.preventDefault();
-    dispatch(createPosts(postData));
+    if (props.selectedId) {
+      dispatch(updatePost(props.selectedId, postData));
+    } else {
+      dispatch(createPosts(postData));
+    }
+    clearHandler();
   };
 
-  const clearHandler = (event) => {};
+  const clearHandler = () => {
+    props.setSelectedId(null);
+    setPostData({
+      createdBy: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
+  };
 
   return (
     <Fragment>
@@ -34,15 +58,17 @@ const Form = () => {
           className={`${classes.root} ${classes.form}`}
           onSubmit={submitHandler}
         >
-          <Typography variant="h6">Creating a memory</Typography>
+          <Typography variant="h6">
+            {props.selectedId ? "Editing" : "Creating"} a memory
+          </Typography>
           <TextField
-            name="creator"
+            name="createdBy"
             variant="outlined"
-            label="Creator"
+            label="CreatedBy"
             fullWidth
-            value={postData.creator}
+            value={postData.createdBy}
             onChange={(event) =>
-              setPostData({ ...postData, creator: event.target.value })
+              setPostData({ ...postData, createdBy: event.target.value })
             }
           />
           <TextField
