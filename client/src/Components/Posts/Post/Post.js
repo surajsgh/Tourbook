@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { useDispatch } from "react-redux";
 
 import {
   CardActions,
@@ -15,14 +16,15 @@ import MoreHorizonIcon from "@mui/icons-material/MoreHoriz";
 import moment from "moment";
 
 import useStyle from "./Style";
+import deletePost from "./../../../Actions/DeletePosts";
 
 const Post = (props) => {
+  const dispatch = useDispatch();
   const classes = useStyle();
 
   const setIdHandler = () => props.setSelectedId(props.post._id);
 
-  console.log("Logging");
-  console.log(props.post);
+  const deletePostHandler = () => dispatch(deletePost(props.post._id));
 
   return (
     <Fragment>
@@ -70,7 +72,7 @@ const Post = (props) => {
             <ThumbUpAltIcon fontSize="small" />
             Like{props.post.likeCount}
           </Button>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={deletePostHandler}>
             <DeleteIcon fontSize="small" />
             Delete
           </Button>
