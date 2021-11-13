@@ -43,3 +43,16 @@ exports.updatePost = async (req, res) => {
     });
   }
 };
+
+exports.deletePost = async (req, res) => {
+  try {
+    await Post.findByIdAndDelete(req.params.id);
+
+    res.status(200).json(null);
+  } catch (error) {
+    res.status(400).json({
+      status: "Failure",
+      result: error.message,
+    });
+  }
+};
