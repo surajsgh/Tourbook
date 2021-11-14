@@ -17,6 +17,7 @@ import moment from "moment";
 
 import useStyle from "./Style";
 import deletePost from "./../../../Actions/DeletePosts";
+import likePost from "./../../../Actions/LikePosts";
 
 const Post = (props) => {
   const dispatch = useDispatch();
@@ -25,6 +26,8 @@ const Post = (props) => {
   const setIdHandler = () => props.setSelectedId(props.post._id);
 
   const deletePostHandler = () => dispatch(deletePost(props.post._id));
+
+  const likePostHandler = () => dispatch(likePost(props.post._id));
 
   return (
     <Fragment>
@@ -68,7 +71,7 @@ const Post = (props) => {
           </Typography>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={likePostHandler}>
             <ThumbUpAltIcon fontSize="small" />
             Like{props.post.likeCount}
           </Button>
