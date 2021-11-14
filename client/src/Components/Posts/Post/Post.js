@@ -66,14 +66,20 @@ const Post = (props) => {
           >
             {props.post.title}
           </Typography>
-          <Typography className={classes.title} variant="h5" gutterBottom>
+          <Typography
+            className={classes.title}
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            gutterBottom
+          >
             {props.post.message}
           </Typography>
         </CardContent>
         <CardActions className={classes.cardActions}>
           <Button size="small" color="primary" onClick={likePostHandler}>
             <ThumbUpAltIcon fontSize="small" />
-            Like{props.post.likeCount}
+            &nbsp; Like {props.post.likeCount}
           </Button>
           <Button size="small" color="primary" onClick={deletePostHandler}>
             <DeleteIcon fontSize="small" />
