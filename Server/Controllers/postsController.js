@@ -56,3 +56,22 @@ exports.deletePost = async (req, res) => {
     });
   }
 };
+
+exports.likePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.id,
+      {
+        likeCount: post.likeCount + 1,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(400).json({
+      status: "Failure",
+      result: error,
+    });
+  }
+};
