@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { useDispatch } from "react-redux";
-
+import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import {
   CardActions,
   Card,
@@ -29,6 +29,39 @@ const Post = (props) => {
 
   const likePostHandler = () => dispatch(likePost(props.post._id));
 
+  const user = JSON.parse(localStorage.getItem("profile"));
+
+  const Likes = () => {
+    if (props.post.likes.length > 0) {
+      return props.post.likes.find(
+        (like) => like === (user?.result?.googleId || user?.result?._id)
+      ) ? (
+        <>
+          <ThumbUpAltIcon fontSize="small" />
+          &nbsp;
+          {props.post.likes.length > 2
+            ? `You and ${props.post.likes.length - 1} others`
+            : `${props.post.likes.length} like${
+                props.post.likes.length > 1 ? "s" : ""
+              }`}
+        </>
+      ) : (
+        <>
+          <ThumbUpAltOutlined fontSize="small" />
+          &nbsp;{props.post.likes.length}{" "}
+          {props.post.likes.length === 1 ? "Like" : "Likes"}
+        </>
+      );
+    }
+
+    return (
+      <>
+        <ThumbUpAltOutlined fontSize="small" />
+        &nbsp;Like
+      </>
+    );
+  };
+
   return (
     <Fragment>
       <Card className={classes.card}>
@@ -38,7 +71,7 @@ const Post = (props) => {
           title={props.post.title}
         />
         <div className={classes.overlay}>
-          <Typography variant="h6">{props.post.createdBy}</Typography>
+          <Typography variant="h6">{props.post.name}</Typography>
           <Typography variant="body2">
             {moment(props.post.createdAt).fromNow()}
           </Typography>
@@ -77,9 +110,13 @@ const Post = (props) => {
           </Typography>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button size="small" color="primary" onClick={likePostHandler}>
-            <ThumbUpAltIcon fontSize="small" />
-            &nbsp; Like {props.post.likeCount}
+          <Button
+            size="small"
+            color="primary"
+            disabled={!user?.result}
+            onClick={likePostHandler}
+          >
+            <Likes />
           </Button>
           <Button size="small" color="primary" onClick={deletePostHandler}>
             <DeleteIcon fontSize="small" />
