@@ -5,13 +5,14 @@ const cors = require("cors");
 
 const tours = require("./Controllers/postsController");
 const postsRouter = require("./Routes/postsRouter");
-
+const usersRouter = require("./Routes/usersRouter");
 const app = express();
 
 //  MIDDLEWARE
 app.use(cors());
 app.use(bodyParser.json({ limit: "10000kb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
+app.use(bodyParser.json());
 
 app.use(morgan("dev"));
 
@@ -29,5 +30,5 @@ app.use(express.json());
 // };
 
 app.use("/posts", postsRouter);
-
+app.use("/users", usersRouter);
 module.exports = app;
