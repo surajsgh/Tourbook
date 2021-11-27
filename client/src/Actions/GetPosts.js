@@ -1,6 +1,6 @@
 import * as api from "./../API/index";
 
-const getPosts = () => async (dispatch) => {
+export const getPosts = () => async (dispatch) => {
   try {
     const { data } = await api.fetchPosts();
     dispatch({ type: "FETCH_ALL", payload: data });
@@ -9,4 +9,4 @@ const getPosts = () => async (dispatch) => {
   }
 };
 
-export default getPosts;
+//export default getPosts;
