@@ -10,7 +10,6 @@ import { updatePost } from "./../../Actions/UpdatePosts";
 
 const Form = (props) => {
   const [postData, setPostData] = useState({
-    createdBy: "",
     title: "",
     message: "",
     tags: "",
@@ -23,7 +22,7 @@ const Form = (props) => {
   );
   const classes = useStyle();
   const dispatch = useDispatch();
-
+  const user = JSON.parse(localStorage.getItem("profile"));
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
@@ -31,9 +30,11 @@ const Form = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     if (props.selectedId) {
-      dispatch(updatePost(props.selectedId, postData));
+      dispatch(
+        updatePost(props.selectedId, { ...postData, name: user?.result?.name })
+      );
     } else {
-      dispatch(createPosts(postData));
+      dispatch(createPosts({ ...postData, name: user?.result?.name }));
     }
     clearHandler();
   };
@@ -41,13 +42,22 @@ const Form = (props) => {
   const clearHandler = () => {
     props.setSelectedId(null);
     setPostData({
-      createdBy: "",
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
   };
+
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own memories and like other's memories.
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Fragment>
@@ -61,16 +71,7 @@ const Form = (props) => {
           <Typography variant="h6">
             {props.selectedId ? "Editing" : "Creating"} a memory
           </Typography>
-          <TextField
-            name="createdBy"
-            variant="outlined"
-            label="CreatedBy"
-            fullWidth
-            value={postData.createdBy}
-            onChange={(event) =>
-              setPostData({ ...postData, createdBy: event.target.value })
-            }
-          />
+
           <TextField
             name="title"
             variant="outlined"
